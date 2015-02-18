@@ -20,6 +20,10 @@
     [super viewDidLoad];
     self.title = @"Departments";
 
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.tableView.allowsSelectionDuringEditing = YES;
+
+
     _objects = [NSMutableArray array];
 
     NSDictionary *sales = @{ @"name" : @"sales",
@@ -31,12 +35,26 @@
     [_objects addObject:sales];
     [_objects addObject:marketing];
 
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButton:)];
+    [self.navigationItem setRightBarButtonItem:editButton];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing:editing animated:animated];
+}
+
+#pragma mark - IBActions
+
+-(IBAction) editButton:(id)sender
+{
+    self.editing=!self.editing;
 }
 
 #pragma mark - UITableView delegate
@@ -72,20 +90,45 @@
     return department[@"name"];
 }
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    if( fromIndexPath == toIndexPath ) return;
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+    NSDictionary *department = [_objects objectAtIndex:fromIndexPath.section];
+    NSArray *employees = department[@"employees"];
+    NSString *employeeName = [employees objectAtIndex:fromIndexPath.row];
+
+    [self.tableView beginUpdates];
+    [_objects removeObjectAtIndex:fromIndexPath.row];
+    [_objects insertObject:employeeName atIndex:toIndexPath.row];
+    [self.tableView endUpdates];
+
+    [tableView reloadData];
+
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    if (indexPath.section == 1 && [_objects count] > 1)
+    {
+        return YES;
+    }
+    return NO;
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(editingStyle == UITableViewCellEditingStyleDelete){
+        [_objects removeObjectAtIndex:indexPath.row];
+        NSArray *rows = [NSArray arrayWithObject:indexPath];
+        [self.tableView beginUpdates];
+        [self.tableView deleteRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+
+    }
+}
+
+
 
 @end
