@@ -35,8 +35,9 @@
     [_objects addObject:sales];
     [_objects addObject:marketing];
 
-    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButton:)];
-    [self.navigationItem setRightBarButtonItem:editButton];
+
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
