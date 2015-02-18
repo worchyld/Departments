@@ -23,7 +23,6 @@
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.allowsSelectionDuringEditing = YES;
 
-
     _objects = [NSMutableArray array];
 
     NSDictionary *sales = @{ @"name" : @"sales",
@@ -55,7 +54,7 @@
 
 -(IBAction) editButton:(id)sender
 {
-    self.editing=!self.editing;
+    [self setEditing:!self.editing animated:YES];
 }
 
 #pragma mark - UITableView delegate
