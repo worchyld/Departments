@@ -90,6 +90,11 @@
     return department[@"name"];
 }
 
+- (BOOL) tableView: (UITableView *) tableView canEditRowAtIndexPath: (NSIndexPath *) indexPath
+{
+    return YES;
+}
+
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     if( fromIndexPath == toIndexPath ) return;
@@ -104,7 +109,6 @@
     [self.tableView endUpdates];
 
     [tableView reloadData];
-
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
