@@ -19,6 +19,18 @@
 {
     [super viewDidLoad];
     self.title = @"Departments";
+
+    _objects = [NSMutableArray array];
+
+    NSDictionary *sales = @{ @"name" : @"sales",
+                             @"employees" : @[ @"Mike", @"Tom", @"Alex"] };
+
+    NSDictionary *marketing = @{ @"name" : @"marketing",
+                             @"employees" : @[ @"Heather", @"Richard", @"Simon"] };
+
+    [_objects addObject:sales];
+    [_objects addObject:marketing];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -31,12 +43,14 @@
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [_objects count];
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    NSDictionary *department = [_objects objectAtIndex:section];
+    NSArray *employees = department[@"employees"];
+    return [employees count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -44,13 +58,18 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellId" forIndexPath:indexPath];
 
     // Configure the cell...
+    NSDictionary *department = [_objects objectAtIndex:indexPath.section];
+    NSArray *employees = department[@"employees"];
+    NSString *employeeName = [employees objectAtIndex:indexPath.row];
+    cell.textLabel.text = employeeName;
 
     return cell;
 }
 
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Section";
+    NSDictionary *department = [_objects objectAtIndex:section];
+    return department[@"name"];
 }
 
 /*
