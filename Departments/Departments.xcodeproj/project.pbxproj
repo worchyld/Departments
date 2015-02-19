@@ -526,6 +526,7 @@
 				4DC5F1221A9469BE00C4FDB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4DC5F1231A9469BE00C4FDB9 /* Build configuration list for PBXNativeTarget "DepartmentsTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +535,7 @@
 				4DC5F1251A9469BE00C4FDB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Amarjit. All rights reserved.
 //
 
-#import "BaseViewController.h"
+#import "BaseTableViewController.h"
 
-@interface ViewController : BaseViewController
+@interface ViewController : BaseTableViewController
 
 @end

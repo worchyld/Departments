@@ -8,9 +8,8 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController ()
 @property (nonatomic, strong) NSMutableArray *objects;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @end
 
 @implementation ViewController
@@ -34,7 +33,6 @@
     [_objects addObject:sales];
     [_objects addObject:marketing];
 
-
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -54,7 +52,7 @@
 
 -(IBAction) editButton:(id)sender
 {
-    [self setEditing:!self.editing animated:YES];
+    [self.tableView setEditing:!self.editing animated:YES];
 }
 
 #pragma mark - UITableView delegate
@@ -73,7 +71,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellId" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellId" forIndexPath:indexPath];
 
     // Configure the cell...
     NSDictionary *department = [_objects objectAtIndex:indexPath.section];
@@ -97,7 +95,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    if( fromIndexPath == toIndexPath ) return;
+//    if (fromIndexPath == toIndexPath ) return;
 
     NSDictionary *department = [_objects objectAtIndex:fromIndexPath.section];
     NSArray *employees = department[@"employees"];
@@ -114,17 +112,14 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
-    if (indexPath.section == 1 && [_objects count] > 1)
-    {
-        return YES;
-    }
-    return NO;
+    return YES;
 }
 
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(editingStyle == UITableViewCellEditingStyleDelete){
-        [_objects removeObjectAtIndex:indexPath.row];
+
+        [[_objects objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
         NSArray *rows = [NSArray arrayWithObject:indexPath];
         [self.tableView beginUpdates];
         [self.tableView deleteRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationAutomatic];
