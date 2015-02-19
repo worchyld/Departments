@@ -10,11 +10,11 @@
 
 @implementation Employee
 
-- (instancetype)initWithName:(NSString *)name
+- (instancetype)initWithName:(NSString *)empName
 {
     self = [super init];
     if (self) {
-        self.name = _name;
+        self.name = empName;
     }
     return self;
 }

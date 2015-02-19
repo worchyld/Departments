@@ -10,5 +10,5 @@
 
 @interface Employee : NSObject
 @property (nonatomic, strong) NSString *name;
-- (instancetype)initWithName:(NSString *)name;
+- (instancetype)initWithName:(NSString *)empName;
 @end
