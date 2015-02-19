@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "Employee.h"
+#import "Department.h"
 
 @interface ViewController ()
 @property (nonatomic, strong) NSMutableArray *objects;
@@ -24,13 +26,20 @@
 
     _objects = [NSMutableArray array];
 
-    NSDictionary *sales = @{ @"name" : @"sales",
-                             @"employees" : @[ @"Mike", @"Tom", @"Alex"] };
+    Employee *mike = [[Employee alloc] initWithName:@"Mike"];
+    Employee *sarah = [[Employee alloc] initWithName:@"Sarah"];
+    Employee *harold = [[Employee alloc] initWithName:@"Helen"];
+    Employee *simmons = [[Employee alloc] initWithName:@"Simmons"];
+    Employee *nathan = [[Employee alloc] initWithName:@"Nathan"];
 
-    NSDictionary *marketing = @{ @"name" : @"marketing",
-                             @"employees" : @[ @"Heather", @"Richard", @"Simon"] };
-
+    Department *sales = [[Department alloc] init];
+    sales.name = @"Sales";
+    sales.employees = [NSMutableArray arrayWithObjects:mike,sarah,harold, nil];
     [_objects addObject:sales];
+
+    Department *marketing = [[Department alloc] init];
+    marketing.name = @"Marketing";
+    marketing.employees = [NSMutableArray arrayWithObjects:simmons, nathan, nil];
     [_objects addObject:marketing];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -64,9 +73,8 @@
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *department = [_objects objectAtIndex:section];
-    NSArray *employees = department[@"employees"];
-    return [employees count];
+    Department *department = [_objects objectAtIndex:section];
+    return [department.employees count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -74,18 +82,17 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellId" forIndexPath:indexPath];
 
     // Configure the cell...
-    NSDictionary *department = [_objects objectAtIndex:indexPath.section];
-    NSArray *employees = department[@"employees"];
-    NSString *employeeName = [employees objectAtIndex:indexPath.row];
-    cell.textLabel.text = employeeName;
+    Department *department = [_objects objectAtIndex:indexPath.section];
+    Employee *employee = [department.employees objectAtIndex:indexPath.row];
+    cell.textLabel.text = employee.name;
 
     return cell;
 }
 
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSDictionary *department = [_objects objectAtIndex:section];
-    return department[@"name"];
+    Department *department = [_objects objectAtIndex:section];
+    return department.name;
 }
 
 - (BOOL) tableView: (UITableView *) tableView canEditRowAtIndexPath: (NSIndexPath *) indexPath
@@ -95,15 +102,15 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-//    if (fromIndexPath == toIndexPath ) return;
+    if (fromIndexPath == toIndexPath ) return;
 
-    NSDictionary *department = [_objects objectAtIndex:fromIndexPath.section];
-    NSArray *employees = department[@"employees"];
-    NSString *employeeName = [employees objectAtIndex:fromIndexPath.row];
+    Department *department = [_objects objectAtIndex:fromIndexPath.section];
+    Employee *employee = [department.employees objectAtIndex:fromIndexPath.row];
 
     [self.tableView beginUpdates];
+
     [_objects removeObjectAtIndex:fromIndexPath.row];
-    [_objects insertObject:employeeName atIndex:toIndexPath.row];
+    [_objects insertObject:employee atIndex:toIndexPath.row];
     [self.tableView endUpdates];
 
     [tableView reloadData];
@@ -115,10 +122,8 @@
     return YES;
 }
 
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if(editingStyle == UITableViewCellEditingStyleDelete){
-
         [[_objects objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
         NSArray *rows = [NSArray arrayWithObject:indexPath];
         [self.tableView beginUpdates];
