@@ -115,10 +115,8 @@
     Department *department = [_objects objectAtIndex:fromIndexPath.section];
     Employee *employee = [department.employees objectAtIndex:fromIndexPath.row];
 
-    [self.tableView beginUpdates];
     [department.employees removeObjectAtIndex:fromIndexPath.row];
     [department.employees insertObject:employee atIndex:toIndexPath.row];
-    [self.tableView endUpdates];
 
     [tableView reloadData];
 }
