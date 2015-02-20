@@ -24,26 +24,10 @@
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.allowsSelectionDuringEditing = YES;
 
-    _objects = [NSMutableArray array];
-
-    Employee *mike = [[Employee alloc] initWithName:@"Mike"];
-    Employee *sarah = [[Employee alloc] initWithName:@"Sarah"];
-    Employee *harold = [[Employee alloc] initWithName:@"Helen"];
-    Employee *simmons = [[Employee alloc] initWithName:@"Simmons"];
-    Employee *nathan = [[Employee alloc] initWithName:@"Nathan"];
-
-    Department *sales = [[Department alloc] init];
-    sales.name = @"Sales";
-    sales.employees = [NSMutableArray arrayWithObjects:mike,sarah,harold, nil];
-    [_objects addObject:sales];
-
-    Department *marketing = [[Department alloc] init];
-    marketing.name = @"Marketing";
-    marketing.employees = [NSMutableArray arrayWithObjects:simmons, nathan, nil];
-    [_objects addObject:marketing];
-
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    _objects = [self objects];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,6 +39,30 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
+}
+
+-(NSMutableArray *) objects
+{
+    if (!_objects) {
+        _objects = [NSMutableArray array];
+        Employee *mike = [[Employee alloc] initWithName:@"Mike"];
+        Employee *sarah = [[Employee alloc] initWithName:@"Sarah"];
+        Employee *harold = [[Employee alloc] initWithName:@"Helen"];
+        Employee *simmons = [[Employee alloc] initWithName:@"Simmons"];
+        Employee *nathan = [[Employee alloc] initWithName:@"Nathan"];
+
+        Department *sales = [[Department alloc] init];
+        sales.name = @"Sales";
+        sales.employees = [NSMutableArray arrayWithObjects:mike,sarah,harold, nil];
+        [_objects addObject:sales];
+
+        Department *marketing = [[Department alloc] init];
+        marketing.name = @"Marketing";
+        marketing.employees = [NSMutableArray arrayWithObjects:simmons, nathan, nil];
+        [_objects addObject:marketing];
+    }
+
+    return _objects;
 }
 
 #pragma mark - IBActions
@@ -108,9 +116,8 @@
     Employee *employee = [department.employees objectAtIndex:fromIndexPath.row];
 
     [self.tableView beginUpdates];
-
-    [_objects removeObjectAtIndex:fromIndexPath.row];
-    [_objects insertObject:employee atIndex:toIndexPath.row];
+    [department.employees removeObjectAtIndex:fromIndexPath.row];
+    [department.employees insertObject:employee atIndex:toIndexPath.row];
     [self.tableView endUpdates];
 
     [tableView reloadData];
@@ -132,17 +139,6 @@
 {
     return UITableViewCellEditingStyleNone;
 }
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if(editingStyle == UITableViewCellEditingStyleDelete){
-        [[_objects objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
-        NSArray *rows = [NSArray arrayWithObject:indexPath];
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:rows withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-    }
-}
-
 
 
 @end
