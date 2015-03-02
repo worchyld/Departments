@@ -27,7 +27,7 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-    _objects = [self objects];
+    if (!_objects) _objects = [self objects];
 }
 
 - (void)didReceiveMemoryWarning
@@ -110,17 +110,17 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    if (fromIndexPath == toIndexPath ) return;
+    if (fromIndexPath != toIndexPath ) {
 
-    Department *department = [_objects objectAtIndex:fromIndexPath.section];
-    Employee *employee = [department.employees objectAtIndex:fromIndexPath.row];
+        Department *departmentFrom = [_objects objectAtIndex:fromIndexPath.section];
+        Department *departmentTo = [_objects objectAtIndex:toIndexPath.section];
 
-    [tableView beginUpdates];
-    [department.employees removeObjectAtIndex:fromIndexPath.row];
-    [department.employees insertObject:employee atIndex:toIndexPath.row];
-    [tableView endUpdates];
-    
-    [tableView reloadData];
+        Employee *employee = [departmentFrom.employees objectAtIndex:fromIndexPath.row];
+
+        [departmentFrom.employees removeObjectAtIndex:fromIndexPath.row];
+        [departmentTo.employees insertObject:employee atIndex:toIndexPath.row];
+        [tableView reloadData];
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
