@@ -118,10 +118,11 @@
         Department *departmentFrom = [_objects objectAtIndex:fromIndexPath.section];
         Department *departmentTo = [_objects objectAtIndex:toIndexPath.section];
 
+        [tableView beginUpdates];
         Employee *employee = [departmentFrom.employees objectAtIndex:fromIndexPath.row];
-
         [departmentFrom.employees removeObjectAtIndex:fromIndexPath.row];
         [departmentTo.employees insertObject:employee atIndex:toIndexPath.row];
+        [tableView endUpdates];
         [tableView reloadData];
     }
 }
@@ -195,22 +196,21 @@
             snapshot.center = center;
 
             // Is destination valid and is it different from source?
-            if (indexPath && ![indexPath isEqual:sourceIndexPath]) {
+            if (indexPath && ![indexPath isEqual:sourceIndexPath])
+            {
+                Department *departmentFrom = [_objects objectAtIndex:sourceIndexPath.section];
+                Department *departmentTo = [_objects objectAtIndex:indexPath.section];
 
                 [self.tableView beginUpdates];
 
-                // ... update data source.
-                NSLog(@"exchanging");
-                [_objects exchangeObjectAtIndex:indexPath.section withObjectAtIndex:sourceIndexPath.section];
+                Employee *employee = [departmentFrom.employees objectAtIndex:sourceIndexPath.row];
+                [departmentFrom.employees removeObjectAtIndex:sourceIndexPath.row];
+                [departmentTo.employees insertObject:employee atIndex:indexPath.row];
 
-                // ... move the rows.
-                NSLog(@"moving the rows");
-                [self.tableView moveRowAtIndexPath:indexPath toIndexPath:sourceIndexPath];
                 [self.tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:indexPath];
 
-                NSLog(@"ending updates");
                 [self.tableView endUpdates];
-
+                
                 // ... and update source so it is in sync with UI changes.
                 sourceIndexPath = indexPath;
             }
