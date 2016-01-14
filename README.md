@@ -1,2 +1,6 @@
 # Departments
-UITableView Demo for a list of departments and staff which you can move between saidd
+UITableView Demo for a list of departments and staff.
+
+Staff is organised into departments
+A user can move a staff member from one department to another using LongPress.
+
