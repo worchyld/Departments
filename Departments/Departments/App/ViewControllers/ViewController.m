@@ -113,8 +113,8 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    if (fromIndexPath != toIndexPath ) {
-
+    if (fromIndexPath != toIndexPath )
+    {
         Department *departmentFrom = [_objects objectAtIndex:fromIndexPath.section];
         Department *departmentTo = [_objects objectAtIndex:toIndexPath.section];
 
