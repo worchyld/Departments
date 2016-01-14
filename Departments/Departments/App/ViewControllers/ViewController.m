@@ -144,8 +144,8 @@
 }
 
 
-- (IBAction)longPressGestureRecognized:(id)sender {
-
+- (IBAction)longPressGestureRecognized:(id)sender
+{
     UILongPressGestureRecognizer *longPress = (UILongPressGestureRecognizer *)sender;
     UIGestureRecognizerState state = longPress.state;
 
@@ -191,15 +191,25 @@
         case UIGestureRecognizerStateChanged: {
             CGPoint center = snapshot.center;
             center.y = location.y;
+            center.x = location.x;
             snapshot.center = center;
 
             // Is destination valid and is it different from source?
             if (indexPath && ![indexPath isEqual:sourceIndexPath]) {
 
+                [self.tableView beginUpdates];
+
                 // ... update data source.
+                NSLog(@"exchanging");
+                [_objects exchangeObjectAtIndex:indexPath.section withObjectAtIndex:sourceIndexPath.section];
 
                 // ... move the rows.
+                NSLog(@"moving the rows");
+                [self.tableView moveRowAtIndexPath:indexPath toIndexPath:sourceIndexPath];
                 [self.tableView moveRowAtIndexPath:sourceIndexPath toIndexPath:indexPath];
+
+                NSLog(@"ending updates");
+                [self.tableView endUpdates];
 
                 // ... and update source so it is in sync with UI changes.
                 sourceIndexPath = indexPath;
