@@ -6,4 +6,4 @@ A user can move a staff member from one department to another using LongPress.
 
 Demo
 
-![Demo](https://dl.dropboxusercontent.com/u/61196723/moving-cells.gif)
+![Demo](http://i.imgur.com/oZj13UC.gif?1)
